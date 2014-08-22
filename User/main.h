@@ -3,19 +3,15 @@
 
 #include <stdint.h>
 
-#define MAXSEG  300
-#define MARGIN (5)
-
-#define NCOL  3
-#define WIDTH  200 
-#define COLSPACING ((WIDTH-MARGIN*2)/NCOL)
-
+#define MAXSEG  100 
+#define WIDTH  320 
+#define HEIGHT  240
 #define NROW  3
-#define HEIGHT  320
-#define ROWSPACING ((HEIGHT-MARGIN*2)/NROW)
-
+#define NCOL  3
 #define BUTTONRADIUS1  3
-#define BUTTONRADIUS2  30
+#define BUTTONRADIUS2 40 
+#define ROWSPACING (HEIGHT/NROW)
+#define COLSPACING (HEIGHT/NROW)
 #define NBUTTON  (NROW*NCOL)
 #define MINDISTANCE  (10)
 #define MINUPEVENTS  50

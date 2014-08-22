@@ -11,7 +11,6 @@
 
 #include "stm32f4xx.h"
 #include "tm_stm32f4_ili9341.h"
-#include "tm_stm32f4_fonts.h"
 #include "tm_stm32f4_spi.h"
 #include "tm_stm32f4_stmpe811.h"
 #include <stdio.h>
@@ -41,9 +40,8 @@ int main(void ) {
     touchData.orientation = TM_STMPE811_Orientation_Portrait_2;
     for (i = 0; i < NROW; i++) { 
         for (j = 0; j < NCOL; j++) { 
-            buttons[ (i * NCOL ) + j ].center.x = (j * COLSPACING) + (COLSPACING / 2) + (MARGIN * j);
-            buttons[ (i * NCOL ) + j ].center.y = (i * ROWSPACING) + (ROWSPACING / 2) + (MARGIN * i);
-            //sprintf(str, "buttons %d %d %d %d %d\n\r", i,j,(i * NCOL ) + j,buttons[ (i * NCOL ) + j ].center.x,buttons[ (i * NCOL ) + j ].center.y) ; sendStringViaUSB(str);
+            buttons[ (i * NROW ) + j ].center.x = (i * COLSPACING) + (COLSPACING / 2);
+            buttons[ (i * NROW ) + j ].center.y = (j * ROWSPACING) + (ROWSPACING / 2);
         }
     }
     displayInitialScreen(buttons);
@@ -65,7 +63,6 @@ int main(void ) {
                 sprintf(str, "added segment: point %d %d %d\n\r", touchData.x, touchData.y, nsegment); sendStringViaUSB(str);
             }
         } else { //event==up
-sprintf(str, "no touch data: \n\r" ); sendStringViaUSB(str);
 
             if ((nUpEvents++ > MINUPEVENTS ) && (nsegment > 0)) {
                 nUpEvents=0;
@@ -84,14 +81,13 @@ sprintf(str, "no touch data: \n\r" ); sendStringViaUSB(str);
 
 void displayInitialScreen(button_t *buttons) {
     int i;
-    char str[3];
+    uint16_t color;
     clearButtons( buttons);
     TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
     for( i = 0; i < NBUTTON; i++ ) {
-        sprintf(str, "%d",i+1);
-      	TM_ILI9341_Puts(buttons[i].center.x-5, buttons[i].center.y-9, str, &TM_Font_11x18, BUTTONCOLOR, ILI9341_COLOR_WHITE);
-        //TM_ILI9341_DrawFilledCircle(buttons[i].center.x, buttons[i].center.y, BUTTONRADIUS1, color);
-        TM_ILI9341_DrawCircle(buttons[i].center.x, buttons[i].center.y, BUTTONRADIUS2, BUTTONCOLOR);
+        color = BUTTONCOLOR;
+        TM_ILI9341_DrawCircle(buttons[i].center.x, buttons[i].center.y, BUTTONRADIUS1, color);
+        TM_ILI9341_DrawCircle(buttons[i].center.x, buttons[i].center.y, BUTTONRADIUS2, color);
     }
 }
 
