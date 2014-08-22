@@ -1,0 +1,6 @@
+-c --cpu Cortex-M4.fp -D__EVAL -g -O2 --apcs=interwork -I..\CMSIS -I..\User -I..\MDK-ARM -I..\STM32F4xx_StdPeriph_Driver\inc -I..\STM32F4xx_StdPeriph_Driver\src -I..\..\00-STM32F429_LIBRARIES
+-I C:\Keil_v5\ARM\RV31\INC
+-I C:\Keil_v5\ARM\PACK\ARM\CMSIS\4.1.1\CMSIS\Include
+-I C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include
+-DSTM32F429_439xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER -DSTM32F4XX -D__ASSEMBLY__ -DKEIL_IDE
+-o .\stm32f4xx_fmc.o --omf_browse .\stm32f4xx_fmc.crf --depend .\stm32f4xx_fmc.d "..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fmc.c"
