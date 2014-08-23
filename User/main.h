@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define MAXSEG  300
+#define MAXSEGMENT  300
 #define MARGIN (5)
 
 #define NCOL  3
@@ -19,9 +19,11 @@
 #define NBUTTON  (NROW*NCOL)
 #define MINDISTANCE  (10)
 #define MINUPEVENTS  50
-#define HITBUTTONCOLOR  ILI9341_COLOR_BROWN
-#define BUTTONCOLOR ILI9341_COLOR_ORANGE
-#define LINECOLOR ILI9341_COLOR_BLACK 
+#define BACKGROUNDCOLOR  ILI9341_COLOR_BLACK
+#define HITBUTTONCOLOR  ILI9341_COLOR_BLUE
+#define BUTTONCOLOR ILI9341_COLOR_WHITE
+#define LINECOLOR ILI9341_COLOR_WHITE 
+#define DEBUG 0
 
 typedef struct point_t {
     int16_t x;
@@ -33,6 +35,7 @@ typedef enum { false, true } bool;
 
 typedef struct button_t{
     point_t center ;
+    char ch;
     int hit;  // the order it was hit in.  0 if not yet hit;
 }  button_t; 
 
@@ -41,6 +44,8 @@ extern void displayInitialScreen(button_t *buttons);
 extern void clearButtons( button_t *buttons);
 
 extern void findHits(point_t *segments, int nsegment, button_t *buttons);
+int compareButtonHit(const void *a,const void *b);
+void sendHits(button_t *buttons );
 
 extern double sqr(double x);
 extern double dist2(point_t v, point_t w);

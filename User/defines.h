@@ -1,6 +1,8 @@
 #ifndef DEFINES_H
 #define DEFINES_H
 
+#define TM_DISCO_STM32F429_DISCOVERY
+
 /* Activate USB HS in FS mode */
 #define USE_USB_OTG_HS
 #include "stm32f4xx.h"
