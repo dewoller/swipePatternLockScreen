@@ -40,8 +40,11 @@ int main(void ) {
     touchData.orientation = TM_STMPE811_Orientation_Portrait_2;
     for (i = 0; i < NROW; i++) { 
         for (j = 0; j < NCOL; j++) { 
-            buttons[ (i * NROW ) + j ].center.x = (i * COLSPACING) + (COLSPACING / 2);
-            buttons[ (i * NROW ) + j ].center.y = (j * ROWSPACING) + (ROWSPACING / 2);
+            buttons[ (i * NCOL ) + j ].center.x = (int) ((j * COLSPACING) + (COLSPACING / 2) + (MARGIN * j));
+            buttons[ (i * NCOL ) + j ].center.y = (int) ((i * ROWSPACING) + (ROWSPACING / 2) + (MARGIN * i));
+            //sprintf(str, "buttons %d %d %d %d %d\n\r", i,j,(i * NCOL ) + j,buttons[ (i * NCOL ) + j ].center.x,buttons[ (i * NCOL ) + j ].center.y) ; sendStringViaUSB(str);
+            //buttons[ (i * NROW ) + j ].center.x = (i * COLSPACING) + (COLSPACING / 2);
+            //buttons[ (i * NROW ) + j ].center.y = (j * ROWSPACING) + (ROWSPACING / 2);
         }
     }
     displayInitialScreen(buttons);

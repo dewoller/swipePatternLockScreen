@@ -21,4 +21,11 @@
 *.x86_64
 *.hex
 
+#uVision generated files
+*.axf
+*.htm
+*.map
+*.dep
+
+
 .*.*~
