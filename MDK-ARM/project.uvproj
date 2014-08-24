@@ -14,8 +14,6 @@
         <TargetCommonOption>
           <Device>STM32F407ZG</Device>
           <Vendor>STMicroelectronics</Vendor>
-          <PackID>Keil.STM32F4xx_DFP.1.0.8</PackID>
-          <PackURL>http://www.keil.com/pack</PackURL>
           <Cpu>IROM(0x08000000,0x100000) IRAM(0x20000000,0x20000) IRAM2(0x10000000,0x10000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -629,6 +627,16 @@
               <FileType>1</FileType>
               <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f4xx_ltdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_ltdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_fmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fmc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -675,16 +683,6 @@
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_disco.h</FilePath>
             </File>
             <File>
-              <FileName>tm_stm32f4_ili9341.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>F:\stm32f429\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341.h</FilePath>
-            </File>
-            <File>
-              <FileName>tm_stm32f4_ili9341.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>F:\stm32f429\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341.c</FilePath>
-            </File>
-            <File>
               <FileName>tm_stm32f4_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_spi.c</FilePath>
@@ -708,6 +706,21 @@
               <FileName>tm_stm32f4_fonts.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_fonts.c</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_ili9341_ltdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341_ltdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_ili9341_ltdc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341_ltdc.h</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_sdram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_sdram.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1603,6 +1616,16 @@
               <FileType>1</FileType>
               <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f4xx_ltdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_ltdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_fmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fmc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1649,16 +1672,6 @@
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_disco.h</FilePath>
             </File>
             <File>
-              <FileName>tm_stm32f4_ili9341.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>F:\stm32f429\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341.h</FilePath>
-            </File>
-            <File>
-              <FileName>tm_stm32f4_ili9341.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>F:\stm32f429\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341.c</FilePath>
-            </File>
-            <File>
               <FileName>tm_stm32f4_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_spi.c</FilePath>
@@ -1682,6 +1695,21 @@
               <FileName>tm_stm32f4_fonts.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_fonts.c</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_ili9341_ltdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341_ltdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_ili9341_ltdc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341_ltdc.h</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_sdram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_sdram.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2577,6 +2605,16 @@
               <FileType>1</FileType>
               <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f4xx_ltdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_ltdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_fmc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fmc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -2623,16 +2661,6 @@
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_disco.h</FilePath>
             </File>
             <File>
-              <FileName>tm_stm32f4_ili9341.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>F:\stm32f429\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341.h</FilePath>
-            </File>
-            <File>
-              <FileName>tm_stm32f4_ili9341.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>F:\stm32f429\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341.c</FilePath>
-            </File>
-            <File>
               <FileName>tm_stm32f4_spi.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_spi.c</FilePath>
@@ -2656,6 +2684,21 @@
               <FileName>tm_stm32f4_fonts.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_fonts.c</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_ili9341_ltdc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341_ltdc.c</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_ili9341_ltdc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_ili9341_ltdc.h</FilePath>
+            </File>
+            <File>
+              <FileName>tm_stm32f4_sdram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\00-STM32F429_LIBRARIES\tm_stm32f4_sdram.c</FilePath>
             </File>
           </Files>
         </Group>
