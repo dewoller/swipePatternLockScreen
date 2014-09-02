@@ -86,7 +86,7 @@ clean:
 	rm -f $(OUTPATH)/$(PROJ_NAME).elf
 	rm -f $(OUTPATH)/$(PROJ_NAME).hex
 	rm -f $(OUTPATH)/$(PROJ_NAME).bin
-	$(MAKE) clean -C lib # Remove this line if you don't want to clean the libs as well
+	$(MAKE) clean -C STM32F4xx_StdPeriph_Driver # Remove this line if you don't want to clean the libs as well
 
 flash:
 	openocd -f /opt/openocd/share/openocd/scripts/board/stm32f429discovery.cfg  \
