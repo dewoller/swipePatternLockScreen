@@ -31,3 +31,9 @@
 *.__i
 
 .*.*~
+*.user
+*.user.bak
+*.uvopt
+*.uvproj
+*.bin
+
