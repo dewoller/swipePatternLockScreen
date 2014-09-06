@@ -1,9 +1,10 @@
 # Sources
 
-SRCS = main.c stm32f4xx_it.c system_stm32f4xx.c misc.c newlib_stub.c
+SRCS = main.c stm32f4xx_it.c system_stm32f4xx.c misc.c newlib_stub.c SM130.c
 SRCS += TM/tm_stm32f4_usb_vcp.c TM/tm_stm32f4_disco.c TM/tm_stm32f4_ili9341.c TM/tm_stm32f4_spi.c 
 SRCS += TM/tm_stm32f4_stmpe811.c TM/tm_stm32f4_usb_vcp.c TM/tm_stm32f4_disco.c TM/tm_stm32f4_ili9341.c  TM/tm_stm32f4_fonts.c 
 SRCS += TM/tm_stm32f4_stmpe811.c TM/tm_stm32f4_ili9341_button.c TM/tm_stm32f4_i2c.c  TM/tm_stm32f4_delay.c 
+SRCS += TM/tm_stm32f4_usart.c 
 #SRCS += TM/tm_stm32f4_rtc.c 
 SRCS +=  TM/usb_device/usb_bsp.c TM/usb_device/usb_core.c TM/usb_device/usb_dcd.c TM/usb_device/usbd_cdc_core.c 
 SRCS +=  TM/usb_device/usbd_cdc_vcp.c TM/usb_device/usb_dcd_int.c TM/usb_device/usbd_core.c TM/usb_device/usbd_desc.c 
@@ -60,7 +61,7 @@ CFLAGS += -ISTM32F4xx_StdPeriph_Driver
 CFLAGS += -ISTM32F4xx_StdPeriph_Driver/inc -ITM -ITM/usb_device
 CFLAGS += -ICMSIS -IUser -IMDK-ARM
 
-SRCS += lib/startup_stm32f4xx.s # add startup file to build
+#SRCS += lib/startup_stm32f4xx.s # add startup file to build
 
 OBJS = $(SRCS:.c=.o)
 

@@ -139,7 +139,13 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
+#ifdef KEIL_IDE
 
+void SysTick_Handler(void)
+{
+  TimingDelay_Decrement();
+}
+#endif
 /******************************************************************************/
 /*                 STM32F4xx Peripherals Interrupt Handlers                   */
 /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */

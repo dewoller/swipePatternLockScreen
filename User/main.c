@@ -4,6 +4,7 @@
 
 
 #include "defines.h"
+#include "SM130.h"
 #include "tm_stm32f4_usb_vcp.h"
 #include "tm_stm32f4_disco.h"
 #include <stdlib.h>
@@ -14,6 +15,9 @@
 #include "tm_stm32f4_fonts.h"
 #include "tm_stm32f4_spi.h"
 #include "tm_stm32f4_stmpe811.h"
+#include "tm_stm32f4_usart.h"
+#include "tm_stm32f4_delay.h"
+
 #include <stdio.h>
 #include <math.h>
 #include "main.h"
@@ -41,6 +45,23 @@ int main(void ) {
     lastPoint.x=0;
     lastPoint.y=0;
 
+	TM_DELAY_Init();
+//	TM_USART_Init(USART1, TM_USART_PinsPack_1, 19200);
+	//SM130_reset();
+    sendStringViaUSB("Version ");
+    /*
+    sendStringViaUSB(SM130_getFirmwareVersion());
+    sendStringViaUSB("\n\r");
+    SM130_seekTag();
+    while (1) {
+        if (SM130_available()) {
+
+            sendStringViaUSB(SM130_getTagName());
+            sendStringViaUSB(SM130_getTagString());
+            sendStringViaUSB("\n\r");
+        }
+    }
+*/
 
     while (1) {
         if (TM_STMPE811_ReadTouch(&touchData) == TM_STMPE811_State_Pressed) {
@@ -199,7 +220,14 @@ void  sendStringViaUSB( 	char *str ) {
     string_len = strlen(str);
 
     for(i = 0; i < string_len; i++) {
-					TM_USB_VCP_Putc(str[i]);
+		sendCharViaUSB(str[i]);
     }
-
 }	
+
+
+void  sendCharViaUSB( 	char c ) {
+    TM_USB_VCP_Putc(c);
+}	
+
+
+
