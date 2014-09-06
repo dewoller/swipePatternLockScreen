@@ -4,6 +4,7 @@
 
 
 #include "defines.h"
+#include "SM130.h"
 #include "tm_stm32f4_usb_vcp.h"
 #include "tm_stm32f4_disco.h"
 #include <stdlib.h>
@@ -35,12 +36,28 @@ int main(void ) {
     TM_ILI9341_Rotate(TM_ILI9341_Orientation_Portrait_2);
     TM_STMPE811_Init();
     TM_USB_VCP_Init();	
+    TM_DELAY_Init();
 
     touchData.orientation = TM_STMPE811_Orientation_Portrait_2;
     displayInitialScreen(buttons);
     lastPoint.x=0;
     lastPoint.y=0;
+    SM130_reset();
+    
+    sendStringViaUSB("Version ");
+    sendStringViaUSB(SM130_getFirmwareVersion());
+   sendStringViaUSB("\n\r");
+    SM130_seekTag();
+    /*
+    while (1) {
+        if (SM130_available()) {
 
+            sendStringViaUSB(SM130_getTagName());
+            sendStringViaUSB(SM130_getTagString());
+            sendStringViaUSB("\n\r");
+        }
+    }
+*/
 
     while (1) {
         if (TM_STMPE811_ReadTouch(&touchData) == TM_STMPE811_State_Pressed) {
@@ -203,3 +220,9 @@ void  sendStringViaUSB( 	char *str ) {
     }
 
 }	
+
+
+void  sendCharViaUSB(   char c ) {
+    TM_USB_VCP_Putc(c);
+}       
+

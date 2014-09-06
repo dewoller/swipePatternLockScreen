@@ -52,7 +52,7 @@ extern double dist2(point_t v, point_t w);
 extern double distToSegmentSquared(point_t v, point_t w, point_t p);
  
 extern void  sendStringViaUSB( 	char *str ) ;
-
+extern void sendCharViaUSB( 	char c ) ;
                     
 
 #endif
