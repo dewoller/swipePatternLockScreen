@@ -7,14 +7,14 @@
 #include "SM130.h"
 #include "tm_stm32f4_usb_vcp.h"
 #include "tm_stm32f4_disco.h"
-#include <stdlib.h>
-#include <string.h>
 
 #include "stm32f4xx.h"
 #include "tm_stm32f4_ili9341.h"
 #include "tm_stm32f4_fonts.h"
 #include "tm_stm32f4_spi.h"
 #include "tm_stm32f4_stmpe811.h"
+#include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <math.h>
 #include "main.h"
@@ -46,18 +46,18 @@ int main(void ) {
     
     sendStringViaUSB("Version ");
     sendStringViaUSB(SM130_getFirmwareVersion());
-   sendStringViaUSB("\n\r");
+    sendStringViaUSB("\n\r");
     SM130_seekTag();
-    /*
     while (1) {
         if (SM130_available()) {
 
             sendStringViaUSB(SM130_getTagName());
+            sendStringViaUSB(":");
             sendStringViaUSB(SM130_getTagString());
             sendStringViaUSB("\n\r");
+            SM130_seekTag();
         }
     }
-*/
 
     while (1) {
         if (TM_STMPE811_ReadTouch(&touchData) == TM_STMPE811_State_Pressed) {

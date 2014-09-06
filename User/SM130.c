@@ -19,20 +19,22 @@
 #include "main.h"
 #include <math.h>
 #include <string.h>
+#include <stdio.h>
 
 #define TRUE 1
 #define FALSE 0
 #define debug 1
-
+char str[80];
 // local functions
 void arrayToHex(char *s, char array[], int len);
-char toHex(char b);
+char toHex1(char b);
+char toHex2(char b);
 
 	char* SM130_getRawData() { return inpacket.data; };
 	//! Returns the last executed command
 	char SM130_getCommand() { return inpacket.command; };
 	//! Returns the packet length, excluding checksum
-	char SM130_getPacketLength() { return inpacket.length+1; };
+	char SM130_getPacketLength() { return inpacket.length; };
 	//! Returns the checksum
 	char SM130_getCheckSum() { return inpacket.csum; };
 	//! Returns the block number for read/write commands
@@ -83,9 +85,9 @@ void SM130_reset()
     TM_USART_Init(USART1, TM_USART_PinsPack_1, 19200);
 
 	SM130_sendCommand(CMD_RESET);
+	Delayms(200);
 
 	// Allow enough time for reset
-	Delay(200);
 
 	// Set antenna power
 	SM130_setAntennaPower(1);
@@ -108,7 +110,7 @@ char* SM130_getFirmwareVersion()
 		SM130_sendCommand(CMD_VERSION);
 		if (SM130_available() && SM130_getCommand() == CMD_VERSION)
 			return versionString;
-		Delay(100);
+		Delayms(100);
 	}
 	// time-out after 1s
 	return 0;
@@ -154,12 +156,15 @@ int SM130_available()
 	// If valid data received, process the response packet
 	if (SM130_receiveData() > 0)
 	{
-        sendStringViaUSB("found data\n\r");
 		// Init response variables
 		tagType = tagLength = *tagString = 0;
 
-		// If packet length is 2, the command failed. Set error code.
-		errorCode = SM130_getPacketLength() < 3 ? inpacket.data[1] : 0;
+		// If packet length is 1, the command failed. Set error code.
+		errorCode = SM130_getPacketLength() == 1 ? inpacket.data[0] : 0;
+
+		if ( errorCode > 0 ) {
+		    return false;
+        }
 
 		// Process command response
 		switch (SM130_getCommand())
@@ -168,18 +173,18 @@ int SM130_available()
 		case CMD_VERSION:
 			// RESET and VERSION commands produce the firmware version
 			len = fmin(SM130_getPacketLength(), sizeof(versionString)) - 1;
-			memcpy(versionString, inpacket.data + 1, len);
+			memcpy(versionString, inpacket.data, len);
 			versionString[len] = 0;
 			break;
 
 		case CMD_SEEK_TAG:
 		case CMD_SELECT_TAG:
 			// If no error, get tag number
-			if(errorCode == 0 && SM130_getPacketLength() >= 6)
+			if(errorCode == 0 && SM130_getPacketLength() >= 5)
 			{
-				tagLength = SM130_getPacketLength() - 2;
-				tagType = inpacket.data[1];
-				memcpy(tagNumber, inpacket.data + 2, tagLength);
+				tagLength = SM130_getPacketLength() - 1;
+				tagType = inpacket.data[0];
+				memcpy(tagNumber, inpacket.data + 1, tagLength);
 				arrayToHex(tagString, tagNumber, tagLength);
 			}
 			break;
@@ -358,7 +363,7 @@ void SM130_transmitData()
 
     // init checksum and packet length
     char sum = 0;
-    int len = data[0] + 2;
+    int len = data[0] + 1;
 
     // remember which command was sent
     cmd = data[1];
@@ -375,67 +380,78 @@ void SM130_transmitData()
     // show transmitted packet for debugging
     if (debug)
     {
-        sendStringViaUSB("> ");
+        sendStringViaUSB("SEND: ");
         printArrayHex(data, len);
-        sendStringViaUSB("checksum=");
-        printHex(sum);
         sendStringViaUSB("\n\r");
     }
 }
 
 
-static int state=0;
-static int pos=0;
-static int haserror=0;
+static int SM130_state=0;
+static int SM130_pos=0;
+static int SM130_haserror=0;
 
 void TM_USART1_ReceiveHandler(uint8_t c) {
-    TM_USB_VCP_Putc('.');
-    TM_USB_VCP_Putc(c);
-    TM_USB_VCP_Putc('.');
-    
-    if (state==0) {
+    /*
+       TM_USB_VCP_Putc('.');
+       TM_USB_VCP_Putc(toHex1(c));
+       TM_USB_VCP_Putc(toHex2(c));
+       sendStringViaUSB("\n\r");
+       sprintf(str, "SM130_state %d SM130_pos %d error %d\n\r", SM130_state, SM130_pos, SM130_haserror); 
+       sendStringViaUSB(str);
+       */
+    if (SM130_state==0) {
         if (c==0xFF) {
             inpacket.length=0;
             inpacket.csum=0;
-            state = 1;
+            SM130_state = 1;
             inpacket.inprogress=1; 
-            haserror=0; 
+            SM130_haserror=0; 
         } else {
-            haserror = 1;
+            SM130_haserror = 1;
         };
-    } else if (state ==1) {
+    } else if (SM130_state ==1) {
         if (c==0x00) {
-            state = 2;
+            SM130_state = 2;
         } else { 
-            state=0;
-            pos=0;
-            haserror=2;
+            SM130_state=0;
+            SM130_pos=0;
+            SM130_haserror=2;
         };
-    } else if (state == 2 ) { // len
-        inpacket.length = c;
-        pos=0;
+    } else if (SM130_state == 2 ) { // len
+        inpacket.length = c-1;
+        SM130_pos=0;
         inpacket.csum += c;
-        state =3;
-    } else if (state == 3 ) { //command
+        SM130_state =3;
+    } else if (SM130_state == 3 ) { //command
         inpacket.command = c;
         inpacket.csum += c;
-        state =4;
-        if (inpacket.length==0) state = 5;
-    } else if (state == 4 ) { //response;
-        if (pos==(inpacket.length-1))  {
-            state=5;
-        }
+        SM130_state =4;
+        if (inpacket.length==0) SM130_state = 5;
+    } else if (SM130_state == 4 ) { //response;
         inpacket.csum += c;
-        inpacket.data[ pos++ ] = c;
-    } else if (state == 5 ) {
+        inpacket.data[ SM130_pos++ ] = c;
+        if (SM130_pos==inpacket.length)  {
+            SM130_state=5;
+        }
+    } else if (SM130_state == 5 ) {
+        SM130_state = 0;
         if (c==inpacket.csum) {
-            state = 0;
             inpacket.inprogress=0;
         } else { 
-            haserror=4;
-            state=0;
+            SM130_haserror=4;
         };
     };
+    if (inpacket.inprogress == 0 )  {
+        sprintf(str, "GOT: length %d command %02X \n\r", inpacket.length, inpacket.command, inpacket.data); 
+        sendStringViaUSB(str);
+        printArrayHex(inpacket.data, inpacket.length);
+    }
+    if (SM130_haserror>0)  {
+        sprintf(str, "ERROR: SM130_haserror %d length %d command %02X \n\r", SM130_haserror, inpacket.length, inpacket.command, inpacket.data); 
+        sendStringViaUSB(str);
+        printArrayHex(inpacket.data, inpacket.length);
+    }
 }
 /**	Receives a packet from the SM130 and verifies the checksum.
  *
@@ -446,17 +462,21 @@ void TM_USART1_ReceiveHandler(uint8_t c) {
 
 int SM130_receiveData()
 {
-    while ((haserror ==0 ) && (inpacket.inprogress ==1));
-    if( haserror) {
+    while ((SM130_haserror ==0 ) && (inpacket.inprogress ==1)) {
+        Delayms(1000);
+        TM_USB_VCP_Putc(';');
+    }
+    inpacket.inprogress=1;
+    if( SM130_haserror) {
         if(debug) {
             sendStringViaUSB("Error < ");
-            printHex(haserror);
+            printHex(SM130_haserror);
             sendStringViaUSB("\n\r");
         }
         return (-1);
     } 
     if (debug ) {
-        sendStringViaUSB("Command < ");
+        sendStringViaUSB("USED < ");
         printArrayHex(inpacket.data, inpacket.length);
         sendStringViaUSB("\n\r");
     }
@@ -491,8 +511,8 @@ void arrayToHex(char *s, char array[], int len)
 {
 	for (int i = 0; i < len; i++)
 	{
-		*s++ = toHex(array[i] >> 4);
-		*s++ = toHex(array[i]);
+		*s++ = toHex1(array[i] );
+		*s++ = toHex2(array[i]);
 		*s++ = '-';
 	}
 	*s = 0;
@@ -503,9 +523,15 @@ void arrayToHex(char *s, char array[], int len)
  *	@param	b	char to convert
  *	$return	uppercase hexadecimal character [0-9A-F]
  */
-char toHex(char b)
+char toHex2(char b)
 {
 	b = b & 0x0f;
+	return b < 10 ? b + '0' : b + 'A' - 10;
+}
+
+char toHex1(char b)
+{
+	b = (b >>4) & 0x0f;
 	return b < 10 ? b + '0' : b + 'A' - 10;
 }
 
@@ -547,7 +573,7 @@ void printArrayHex(char array[], int len)
 
 void printHex(char val)
 {
-		sendCharViaUSB( toHex(val >> 4));
-		sendCharViaUSB( toHex(val ));
+		sendCharViaUSB( toHex1(val));
+		sendCharViaUSB( toHex2(val ));
 }
 
