@@ -24,6 +24,8 @@ int main(void ) {
     int nsegment = 0;
 
     char str[300];
+    int bufsize=100;
+    char inbuf[bufsize];
     point_t lastPoint;
     point_t thisPoint;
     int nUpEvents = 0;
@@ -43,6 +45,7 @@ int main(void ) {
 
 
     while (1) {
+
         if (TM_STMPE811_ReadTouch(&touchData) == TM_STMPE811_State_Pressed) {
             nUpEvents=0;
             if (DEBUG) {sprintf(str, "Pressed: point %d %d %d\n\r", touchData.x, touchData.y, nsegment); sendStringViaUSB(str);}
@@ -147,7 +150,7 @@ void findHits(point_t *segments, int nsegment, button_t *buttons) {
             segments[nsegment-1].y 
             );sendStringViaUSB(str);}
 
-    TM_ILI9341_DrawRectangle(
+    TM_ILI9341_DrawLine(
             segments[nsegment-2 ].x, 
             segments[nsegment-2 ].y, 
             segments[nsegment-1].x, 
